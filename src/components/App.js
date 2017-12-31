@@ -1,4 +1,10 @@
 import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Link
+} from 'react-router-dom'
+
 import Balance from './Balance'
 import TransactionTable from './TransactionTable'
 import TransactionChooser from './TransactionChooser'
@@ -22,7 +28,6 @@ export default class App extends React.Component {
 
   addTransaction(transaction) {
     const transactions = [...this.state.transactions, transaction]
-    console.log("app transactions", transactions)
     this.setState({ transactions })
   }
 
@@ -42,13 +47,22 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <TransactionChooser onSubmit={ this.addTransaction } />
-        <Balance value={ this.calculateBalance() } />
-        <TransactionTable
-          transactions={ this.state.transactions }
-          onDelete={ this.deleteTransaction } />
-      </div>
+      <Router>
+        <div>
+          <Route exact path="/" render={() => (
+            <div>
+              <TransactionChooser onSubmit={ this.addTransaction } />
+              <Balance value={ this.calculateBalance() } />
+            </div>
+          )} />
+          <Route path="/transactions" render={() => (
+            <TransactionTable
+              transactions={ this.state.transactions }
+              onDelete={ this.deleteTransaction } />
+          )} />
+          <Link to="/transactions">See all transactions</Link>
+        </div>
+      </Router>
     )
   }
 

@@ -18,5 +18,8 @@ module.exports = {
       { test: /\.js$/, use: 'babel-loader'}
     ]
   },
-  plugins: [HtmlWebpackPluginConfig]
+  plugins: [HtmlWebpackPluginConfig],
+  devServer: {
+    historyApiFallback: true
+  }
 }
