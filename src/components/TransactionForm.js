@@ -17,7 +17,7 @@ export default class TransactionForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault()
     this.props.onSubmit(this.state)
-    
+
     this.setState(this.defaultState)
   }
 
@@ -37,17 +37,19 @@ export default class TransactionForm extends React.Component {
         <h2>
           Enter Transaction
         </h2>
-        <input 
-          placeholder="amount" 
-          type="number" 
+        <input
+          required
+          placeholder="amount"
+          type="number"
           name="amount"
-          value={this.state.amount} 
+          value={this.state.amount}
           onChange={this.handleInputChange} />
-        <input 
-          placeholder="description" 
-          type="text" 
+        <input
+          required
+          placeholder="description"
+          type="text"
           name="description"
-          value={this.state.description} 
+          value={this.state.description}
           onChange={this.handleInputChange} />
         <button type="submit">Add</button>
       </form>

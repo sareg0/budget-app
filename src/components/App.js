@@ -1,19 +1,34 @@
 import React from 'react'
 import Balance from './Balance'
-import TransactionForm from './TransactionForm'
+import TransactionTable from './TransactionTable'
+import TransactionChooser from './TransactionChooser'
 
 export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      transactions: []
+      transactions: [{
+        amount: 66,
+        description: 'bleep bloop'
+      }, {
+        amount: 88,
+        description: 'rar rar'
+      }]
     }
 
     this.addTransaction = this.addTransaction.bind(this)
+    this.deleteTransaction = this.deleteTransaction.bind(this)
   }
 
-  addTransaction(value) {
-    const transactions = [...this.state.transactions, value]
+  addTransaction(transaction) {
+    const transactions = [...this.state.transactions, transaction]
+    console.log("app transactions", transactions)
+    this.setState({ transactions })
+  }
+
+  deleteTransaction(transactionIndex) {
+    const transactions = this.state.transactions
+    transactions.splice(transactionIndex, 1)
     this.setState({ transactions })
   }
 
@@ -26,11 +41,13 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state.transactions)
     return (
       <div>
-        <TransactionForm onSubmit={ this.addTransaction } />
+        <TransactionChooser onSubmit={ this.addTransaction } />
         <Balance value={ this.calculateBalance() } />
+        <TransactionTable
+          transactions={ this.state.transactions }
+          onDelete={ this.deleteTransaction } />
       </div>
     )
   }
