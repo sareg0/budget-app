@@ -9,6 +9,19 @@ import Balance from './Balance'
 import TransactionTable from './TransactionTable'
 import TransactionChooser from './TransactionChooser'
 
+const Navigation = () => (
+  <div>
+    <ul>
+      <li>
+        <Link to="/">Home</Link>
+      </li>
+      <li>
+        <Link to="/transactions">Transactions</Link>
+      </li>
+    </ul>
+  </div>
+)
+
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -24,6 +37,8 @@ export default class App extends React.Component {
 
     this.addTransaction = this.addTransaction.bind(this)
     this.deleteTransaction = this.deleteTransaction.bind(this)
+    this.renderHomePage = this.renderHomePage.bind(this)
+    this.renderTransactionsPage = this.renderTransactionsPage.bind(this)
   }
 
   addTransaction(transaction) {
@@ -45,22 +60,30 @@ export default class App extends React.Component {
     return total.toFixed(2)
   }
 
+  renderHomePage() {
+    return (
+      <div>
+        <TransactionChooser onSubmit={ this.addTransaction } />
+        <Balance value={ this.calculateBalance() } />
+      </div>
+    )
+  }
+
+  renderTransactionsPage() {
+    return(
+      <TransactionTable
+        transactions={ this.state.transactions }
+        onDelete={ this.deleteTransaction } />
+    )
+  }
+
   render() {
     return (
       <Router>
         <div>
-          <Route exact path="/" render={() => (
-            <div>
-              <TransactionChooser onSubmit={ this.addTransaction } />
-              <Balance value={ this.calculateBalance() } />
-            </div>
-          )} />
-          <Route path="/transactions" render={() => (
-            <TransactionTable
-              transactions={ this.state.transactions }
-              onDelete={ this.deleteTransaction } />
-          )} />
-          <Link to="/transactions">See all transactions</Link>
+          <Navigation />
+          <Route exact path="/" render={this.renderHomePage} />
+          <Route path="/transactions" render={ this.renderTransactionsPage } />
         </div>
       </Router>
     )
