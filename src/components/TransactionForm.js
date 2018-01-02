@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default class TransactionForm extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.defaultState = {
       amount: '',
@@ -14,14 +14,15 @@ export default class TransactionForm extends React.Component {
     this.handleInputChange = this.handleInputChange.bind(this)
   }
 
-  handleSubmit(e) {
+  handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    const parsedTransaction = this.prepareTransaction()
+    this.props.onSubmit(parsedTransaction)
 
     this.setState(this.defaultState)
   }
 
-  handleInputChange(e) {
+  handleInputChange (e) {
     const target = e.target
     const value = target.value
     const name = target.name
@@ -31,7 +32,17 @@ export default class TransactionForm extends React.Component {
     })
   }
 
-  render() {
+  prepareTransaction () {
+    let amount = this.state.amount
+
+    if (this.props.isNegative) {
+      amount = amount * -1
+    }
+
+    return { amount, description: this.state.description }
+  }
+
+  render () {
     return (
       <form onSubmit={this.handleSubmit}>
         <h2>

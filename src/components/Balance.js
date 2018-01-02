@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default class Balance extends React.Component {
-  render() {
+  render () {
     return (
       <div>
         <h2>Balance</h2>

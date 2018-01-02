@@ -6,8 +6,8 @@ import {
 } from 'react-router-dom'
 
 import Balance from './Balance'
+import TransactionForm from './TransactionForm'
 import TransactionTable from './TransactionTable'
-import TransactionChooser from './TransactionChooser'
 
 const Navigation = () => (
   <div>
@@ -23,7 +23,7 @@ const Navigation = () => (
 )
 
 export default class App extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       transactions: [{
@@ -39,20 +39,21 @@ export default class App extends React.Component {
     this.deleteTransaction = this.deleteTransaction.bind(this)
     this.renderHomePage = this.renderHomePage.bind(this)
     this.renderTransactionsPage = this.renderTransactionsPage.bind(this)
+    this.renderTransactionForm = this.renderTransactionForm.bind(this)
   }
 
-  addTransaction(transaction) {
+  addTransaction (transaction) {
     const transactions = [...this.state.transactions, transaction]
     this.setState({ transactions })
   }
 
-  deleteTransaction(transactionIndex) {
+  deleteTransaction (transactionIndex) {
     const transactions = this.state.transactions
     transactions.splice(transactionIndex, 1)
     this.setState({ transactions })
   }
 
-  calculateBalance() {
+  calculateBalance () {
     const { transactions } = this.state
     const total = transactions.reduce((total, { amount }) => {
       return total + parseFloat(amount)
@@ -60,16 +61,23 @@ export default class App extends React.Component {
     return total.toFixed(2)
   }
 
-  renderHomePage() {
+  renderHomePage () {
     return (
       <div>
-        <TransactionChooser onSubmit={ this.addTransaction } />
+        <ul>
+          <li>
+            <Link to="/transactions/new/positive">&#43;</Link>
+          </li>
+          <li>
+            <Link to="/transactions/new/negative">&#8722;</Link>
+          </li>
+        </ul>
         <Balance value={ this.calculateBalance() } />
       </div>
     )
   }
 
-  renderTransactionsPage() {
+  renderTransactionsPage () {
     return(
       <TransactionTable
         transactions={ this.state.transactions }
@@ -77,16 +85,29 @@ export default class App extends React.Component {
     )
   }
 
-  render() {
+  renderTransactionForm (routeProps) {
+    //https://reacttraining.com/react-router/web/api/Route/Route-props
+    const type = routeProps.match.params.type
+    const isNegative = type === 'negative'
+    return (
+      <TransactionForm
+        onSubmit={ this.addTransaction }
+        isNegative={ isNegative } />
+    )
+  }
+
+  render () {
     return (
       <Router>
         <div>
           <Navigation />
-          <Route exact path="/" render={this.renderHomePage} />
-          <Route path="/transactions" render={ this.renderTransactionsPage } />
+          <Route exact path="/" render={ this.renderHomePage } />
+          <Route exact path="/transactions"
+            render={ this.renderTransactionsPage } />
+          <Route exact path="/transactions/new/:type"
+            render={ this.renderTransactionForm } />
         </div>
       </Router>
     )
   }
-
 }
