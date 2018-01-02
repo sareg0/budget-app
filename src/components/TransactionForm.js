@@ -1,14 +1,13 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 
 export default class TransactionForm extends React.Component {
   constructor (props) {
     super(props)
-    this.defaultState = {
+    this.state = {
       amount: '',
       description: ''
     }
-
-    this.state = this.defaultState
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -19,7 +18,8 @@ export default class TransactionForm extends React.Component {
     const parsedTransaction = this.prepareTransaction()
     this.props.onSubmit(parsedTransaction)
 
-    this.setState(this.defaultState)
+    this.setState({ isSubmitted: true })
+
   }
 
   handleInputChange (e) {
@@ -43,6 +43,12 @@ export default class TransactionForm extends React.Component {
   }
 
   render () {
+    if (this.state.isSubmitted) {
+      return (
+        <Redirect to='/' />
+      )
+    }
+
     return (
       <form onSubmit={this.handleSubmit}>
         <h2>
