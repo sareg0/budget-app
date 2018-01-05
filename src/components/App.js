@@ -4,6 +4,7 @@ import {
   Route,
   Link
 } from 'react-router-dom'
+import styled from 'styled-components'
 
 import Balance from './Balance'
 import TransactionForm from './TransactionForm'
@@ -21,6 +22,31 @@ const Navigation = () => (
     </ul>
   </div>
 )
+
+const Title = styled.h1`
+  font-size: 1.5em;
+`
+
+const Wrapper = styled.section`
+  background-color: skyblue;
+  border: 5px solid black;
+  height: 100vh;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const TransactionLink = styled(Link)`
+  color: black;
+  font-weight: bold;
+  font-size: 30px;
+  border: 3px solid black;
+  padding: 0.5em;
+  margin: 0.5em;
+  background: white;
+  text-decoration: none;
+`
 
 export default class App extends React.Component {
   constructor (props) {
@@ -64,14 +90,9 @@ export default class App extends React.Component {
   renderHomePage () {
     return (
       <div>
-        <ul>
-          <li>
-            <Link to="/transactions/new/positive">&#43;</Link>
-          </li>
-          <li>
-            <Link to="/transactions/new/negative">&#8722;</Link>
-          </li>
-        </ul>
+        <Title>My Budget!</Title>
+        <TransactionLink to="/transactions/new/positive">&#43;</TransactionLink>
+        <TransactionLink to="/transactions/new/negative">&#8722;</TransactionLink>
         <Balance value={ this.calculateBalance() } />
       </div>
     )
@@ -99,14 +120,14 @@ export default class App extends React.Component {
   render () {
     return (
       <Router>
-        <div>
+        <Wrapper>
           <Navigation />
           <Route exact path="/" render={ this.renderHomePage } />
           <Route exact path="/transactions"
             render={ this.renderTransactionsPage } />
           <Route exact path="/transactions/new/:type"
             render={ this.renderTransactionForm } />
-        </div>
+        </Wrapper>
       </Router>
     )
   }

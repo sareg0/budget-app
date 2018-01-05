@@ -1,5 +1,17 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
+import styled from 'styled-components'
+
+const Input = styled.input`
+  height: 40px;
+  border: 3px solid black;
+  padding: 0.5em;
+  margin: 0.5em;
+`
+
+const Button = styled.button`
+  background: ${props => props.primary ? 'red' : 'orange' }
+`
 
 export default class TransactionForm extends React.Component {
   constructor (props) {
@@ -54,21 +66,21 @@ export default class TransactionForm extends React.Component {
         <h2>
           Enter Transaction
         </h2>
-        <input
+        <Input
           required
           placeholder="amount"
           type="number"
           name="amount"
           value={this.state.amount}
           onChange={this.handleInputChange} />
-        <input
+        <Input
           required
           placeholder="description"
           type="text"
           name="description"
           value={this.state.description}
           onChange={this.handleInputChange} />
-        <button type="submit">Add</button>
+        <Button primary type="submit">Add</Button>
       </form>
     )
   }
