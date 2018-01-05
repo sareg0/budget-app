@@ -2,4 +2,4 @@
 A fun way to budget in React
 
 WIP Screenshots
-![#minimalist ;D](docs/WIP-1.gif)
+![Getting acquainted with styling components ;D](docs/WIP-2.gif)
